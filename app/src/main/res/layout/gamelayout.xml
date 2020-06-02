@@ -3,8 +3,9 @@
     android:id="@+id/linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/hintergrund1"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
+
 
 
     <Button
@@ -13,5 +14,15 @@
         android:layout_height="wrap_content"
         android:text="MENÜ"
         />
+
+    <TextView
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background1"
+        />
+
+
+
 
 </LinearLayout>

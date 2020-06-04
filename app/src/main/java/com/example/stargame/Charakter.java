@@ -29,30 +29,55 @@ public class Charakter {
     //Methoden für Eigenschaften
     //Charakter bekommt Hunger
     public void wirdHungrig(){
-        this.hunger-=10;
-    }
+        if(this.hunger > 0) {
+            this.hunger -= 10;
+        }    }
     //Charakter wird dreckig
     public void wirdDreckig(){
-        this.sauberkeit-=10;
-    }
+        if(this.sauberkeit > 0) {
+            this.sauberkeit -= 10;
+        }    }
     //Charakter wird Müde
     public void wirdMuede(){
-        this.energie-=10;
+        if(this.energie > 0) {
+            this.energie -= 10;
+        }
     }
     //Charakter schläft
     public void schlaeft(){
-        this.energie+=10;
+        if(this.energie < 100) {
+            this.energie += 10;
+        }
     }
     //Charakter isst
     public void isst(){
-        this.hunger+=10;
+        if(this.hunger < 100){
+            this.hunger+=10;
+        }
     }
     //Charakter wird gewaschen
     public void wirdSauber(){
-        this.sauberkeit+=10;
+        if(this.sauberkeit < 100) {
+            this.sauberkeit += 10;
+        }
     }
     public void updateHp(){
         this.hp= (this.energie+this.sauberkeit+this.hunger);
     }
 
+    public int getHunger() {
+        return hunger;
+    }
+
+    public int getEnergie() {
+        return energie;
+    }
+
+    public int getHp() {
+        return hp = energie+hunger+sauberkeit;
+    }
+
+    public int getSauberkeit() {
+        return sauberkeit;
+    }
 }

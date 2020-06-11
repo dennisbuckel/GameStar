@@ -36,7 +36,8 @@ public class Charakter {
     public void wirdDreckig(){
         if(this.sauberkeit > 0) {
             this.sauberkeit -= 10;
-        }    }
+        }
+    }
     //Charakter wird Müde
     public void wirdMuede(){
         if(this.energie > 0) {
@@ -61,23 +62,51 @@ public class Charakter {
             this.sauberkeit += 10;
         }
     }
-    public void updateHp(){
-        this.hp= (this.energie+this.sauberkeit+this.hunger);
-    }
-
+    /**
+     * Gibt die HungerHp zurück
+     */
     public int getHunger() {
         return hunger;
     }
-
+    /**
+     * Gibt die energieHp zurück
+     */
     public int getEnergie() {
         return energie;
     }
 
-    public int getHp() {
-        return hp = energie+hunger+sauberkeit;
-    }
-
+    /**
+     * Gibt die sauberkeitHp zurück
+     */
     public int getSauberkeit() {
         return sauberkeit;
     }
+    /**
+     * gib die GesamtHp zurück
+     */
+    public int getHp() {
+        return hp = energie+hunger+sauberkeit;
+    }
+    /**
+     * Update die HungerHp
+     * @param _hp ist der neue Wert
+     */
+    public void updateHungerHp(int _hp) {
+         this.hunger = _hp;
+    }
+    /**
+     * Update die SauberkeitsHp
+     * @param _hp ist der neue Wert
+     */
+    public void updateSauberkeitHp(int _hp) {
+        this.sauberkeit = _hp;
+    }
+    /**
+     * Update die EnergieHp
+     * @param _hp ist der neue Wert
+     */
+    public void updateEnergieHp(int _hp) {
+        this.energie = _hp;
+    }
+
 }

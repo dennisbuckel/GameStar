@@ -1,6 +1,8 @@
 package com.example.stargame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -10,16 +12,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.text.DateFormat;
+import java.util.Calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class GameActivity extends AppCompatActivity implements View.OnClickListener {
+import java.text.DateFormat;
+import java.util.Calendar;
 
-    Charakter testCharakter = new Charakter();
+public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button fuettern;
     Button schlafen;
     Button saeubern;
+
+    Charakter testCharakter = new Charakter();
 
     int counter = 0;
 
@@ -29,6 +36,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gamelayout);
+
+        herstellungDerSternes();
+
         fuettern = (Button) findViewById(R.id.fuettern);
         schlafen = (Button) findViewById(R.id.schlafen);
         saeubern = (Button) findViewById(R.id.saeubern);
@@ -38,8 +48,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         saeubern.setOnClickListener(this);
         Button muedeButton = (Button) findViewById(R.id.schlafen);
         timer.run();
-    }
 
+
+    }
     /**
      * In timer.run() werden alle Methoden in einem 2 Sekunden Intervall aufgerufen
      */
@@ -59,11 +70,51 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             abnutzung();
             //Toast.makeText(GameActivity.this, "Zähler " + zaehler, Toast.LENGTH_SHORT).show();
             handler.postDelayed(timer, 1000);
-            //zaehler += 1;
-      }
+
+            int hp = testCharakter.getHp();
+            if(hp==0) {
+                handler.removeCallbacks(timer);
+                sternIstGestorben();
+            }
+
+        }
     };
 
+    public void sternIstGestorben(){
+        // navigiert zurück zur MainActivity
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
 
+        // Deitei öffenen in der die Daten liegen
+        SharedPreferences speicherung = getSharedPreferences("SpeicherDatei", 0);
+
+        //Editor Klasse initialiesieren
+        SharedPreferences.Editor editor = speicherung.edit();
+        editor.putInt("hungerHp", 0);
+        editor.putInt("sauberHp", 0);
+        editor.putInt("energieHp", 0);
+        editor.commit();
+
+    }
+    /**
+     * Hier bekommt der Stern seine Hp
+     */
+    public void herstellungDerSternes(){
+
+        // Deitei öffenen in der die Daten liegen
+        SharedPreferences speicherung = getSharedPreferences("SpeicherDatei", 0);
+
+        //Editor Klasse initialiesieren
+        SharedPreferences.Editor editor = speicherung.edit();
+
+        int hungerHP = speicherung.getInt("hungerHp", 100);
+        int sauberkeitsHP = speicherung.getInt("sauberHp", 100);
+        int energieHP = speicherung.getInt("energieHp",100);
+        testCharakter.updateHungerHp(hungerHP);
+        testCharakter.updateSauberkeitHp(sauberkeitsHP);
+        testCharakter.updateEnergieHp(energieHP);
+
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -138,5 +189,45 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         TextView hpNumber = (TextView) findViewById(R.id.textViewHp);
         int hp = testCharakter.getHp();
         hpNumber.setText("HP "+hp);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        //Aktueller Tag
+        Calendar calendar = Calendar.getInstance();
+        String aktuellerTag = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(calendar.getTime());
+        aktuellerTag = aktuellerTag.substring(0, 2);
+        if(aktuellerTag.contains(".")){
+            aktuellerTag = aktuellerTag.substring(0, 1);
+        }
+        //Uhrzeit
+        SimpleDateFormat zeitformat = new SimpleDateFormat("HH:mm:ss");
+        String zeitformatS = zeitformat.format(calendar.getTime());
+
+
+        int hungerHp = testCharakter.getHunger();
+        int sauberHp = testCharakter.getSauberkeit();
+        int energieHp = testCharakter.getEnergie();
+
+
+        //Share Preferences Datei öffnen
+        SharedPreferences speicherung = getSharedPreferences("SpeicherDatei", 0);
+
+        //Editor Klasse initialiesieren
+        SharedPreferences.Editor editor = speicherung.edit();
+
+        //Schreiben der wichtigen Daten
+        editor.putString("tag", aktuellerTag);
+        editor.putString("uhrzeit",  zeitformatS);
+
+        editor.putInt("hungerHp", hungerHp);
+        editor.putInt("sauberHp", sauberHp);
+        editor.putInt("energieHp", energieHp);
+
+        //Speicherung der Daten
+
+        editor.commit();
     }
 }

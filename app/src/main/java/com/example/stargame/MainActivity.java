@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 launchActivity();
+                speicherDesNamens();
             }
         });
 
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             int energieHP = speicherung.getInt("energieHp",0);
 
             if((hungerHP + sauberkeitsHP +energieHP) > 0){
+
                 launchActivity();
 
             }else{
@@ -59,29 +63,92 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        namensEingabe();
+
     }
 
     public void launchActivity(){
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
+
+    /**
+     *  Zeigt eine einen Platzhalter oder den Namen des vorigen Sternes an
+     */
+    public void namensEingabe(){
+
+        // Deitei öffenen in der die Daten liegen
+        SharedPreferences speicherung = getSharedPreferences("SpeicherDatei", 0);
+
+        //Editor Klasse initialiesieren
+        SharedPreferences.Editor editor = speicherung.edit();
+        String name = speicherung.getString("name", "FALSE");
+
+        EditText nameText = (EditText) findViewById(R.id.name);
+        String nameTextString = nameText.getText().toString();
+        if(name == "FALSE"){
+
+            nameText.setText("Geben Sie Ihren Stern einen Namen...");
+
+        }else{
+
+            nameText.setText(name);
+
+        }
+    }
+
+    /**
+     * Speichert den Namen aud der Texteingabe oder einen Defaultwert
+     */
+    public void speicherDesNamens(){
+
+        // Deitei öffenen in der die Daten liegen
+        SharedPreferences speicherung = getSharedPreferences("SpeicherDatei", 0);
+
+        //Editor Klasse initialiesieren
+        SharedPreferences.Editor editor = speicherung.edit();
+
+        //Wert aus der Texteingabe
+        EditText nameText = (EditText) findViewById(R.id.name);
+        String nameTextString = nameText.getText().toString();
+
+        if(nameTextString.equals("Geben Sie Ihren Stern einen Namen...")){
+
+            //Default Name
+            nameTextString = "Jonny";
+
+        }
+        editor.putString("name", nameTextString);
+        //Speicherung der Daten
+        editor.commit();
+
+    }
+
     /**
      *  Berechnet die Zeit in Sekunden der aktuellen Zeit
      */
     public int aktuelleZeitInSekunden(){
 
+        // Aktuelles Datum
         Calendar calendar = Calendar.getInstance();
+        //Legt das Datenformat fest
         String aktuellerTag = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(calendar.getTime());
+        //Trennt die ersten zwei Zeichen von der Zeichenkette(der Tag)
         aktuellerTag = aktuellerTag.substring(0, 2);
+        //falls statt 04, 4. abgeschnitten wird -> 4
         if(aktuellerTag.contains(".")){
             aktuellerTag = aktuellerTag.substring(0, 1);
         }
 
+        //Aktuelle Uhrzeit im Format HH:mm:ss
         SimpleDateFormat zeitformat = new SimpleDateFormat("HH:mm:ss");
         String zeitformatS = zeitformat.format(calendar.getTime());
 
+        //Schneidet HH aus
         String zeitformatStunde = zeitformatS.substring(0, 2);
+        //Schneidet mm aus
         String zeitformatMinute = zeitformatS.substring(3, 5);
+        //Schneidet ss aus
         String zeitformatSekunden = zeitformatS.substring(6, 8);
 
         int aktuelleZeitInSekunden = ((Integer.parseInt(aktuellerTag) * 24 * 60) + (Integer.parseInt(zeitformatStunde) * 60) + Integer.parseInt(zeitformatMinute)) * 60 + Integer.parseInt(zeitformatSekunden);
@@ -129,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
         int letzteLoginZeitInSekunden = letzteLoginZeitInSekunden();
         int vergangeneSekunden = aktuelleZeitInSekunden - letzteLoginZeitInSekunden;
 
+        //Lässt alle verpassten Intervalle aufholen
         int intervallEinheiten = vergangeneSekunden / 5;
         for(int i=0; i<=intervallEinheiten; i++){
 
@@ -152,7 +220,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt("energieHp", energieHP);
 
         //Speicherung der Daten
-
         editor.commit();
 
     }

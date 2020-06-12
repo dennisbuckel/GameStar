@@ -49,6 +49,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Button muedeButton = (Button) findViewById(R.id.schlafen);
         timer.run();
 
+        namensAnzeige();
+
 
     }
     /**
@@ -97,6 +99,26 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     }
     /**
+     * Zeigt den Namen das Sternes an
+     *
+     */
+    public void namensAnzeige(){
+
+        //Share Preferences Datei öffnen
+        SharedPreferences speicherung = getSharedPreferences("SpeicherDatei", 0);
+
+        //Editor Klasse initialiesieren
+        SharedPreferences.Editor editor = speicherung.edit();
+
+        String nameString = speicherung.getString("name", "Jonny");
+
+        TextView name = (TextView) findViewById(R.id.viewName);
+
+        name.setText(nameString);
+
+    }
+
+    /**
      * Hier bekommt der Stern seine Hp
      */
     public void herstellungDerSternes(){
@@ -110,6 +132,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         int hungerHP = speicherung.getInt("hungerHp", 100);
         int sauberkeitsHP = speicherung.getInt("sauberHp", 100);
         int energieHP = speicherung.getInt("energieHp",100);
+        if(hungerHP+sauberkeitsHP+energieHP == 0){
+
+            hungerHP = 100;
+            sauberkeitsHP = 100;
+            energieHP = 100;
+
+        }
         testCharakter.updateHungerHp(hungerHP);
         testCharakter.updateSauberkeitHp(sauberkeitsHP);
         testCharakter.updateEnergieHp(energieHP);

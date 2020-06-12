@@ -11,4 +11,13 @@
         android:text="Start"
         />
 
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="319dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="250px"
+        android:layout_marginTop="500px"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
 </LinearLayout>

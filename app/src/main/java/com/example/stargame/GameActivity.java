@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.text.DateFormat;
@@ -50,6 +51,38 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         timer.run();
 
         namensAnzeige();
+
+
+        //Hintergrund Tag/Nacht ändern
+        Button morgens = findViewById(R.id.morgen);
+        Button mittags = findViewById(R.id.mittag);
+        Button nachmittags = findViewById(R.id.nachmittag);
+        Button nachts = findViewById(R.id.nacht);
+        final RelativeLayout lin = findViewById(R.id.linear);
+        morgens.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lin.setBackgroundResource(R.drawable.morgens);
+            }
+        });
+        mittags.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lin.setBackgroundResource(R.drawable.mittags);
+            }
+        });
+        nachmittags.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lin.setBackgroundResource(R.drawable.nachmittags);
+            }
+        });
+        nachts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lin.setBackgroundResource(R.drawable.nachts);
+            }
+        });
 
 
     }
@@ -259,4 +292,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         editor.commit();
     }
+
+
+
 }

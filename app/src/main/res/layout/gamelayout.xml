@@ -62,37 +62,4 @@
         android:layout_height="wrap_content"
         android:text="" />
 
-    <Button
-        android:id="@+id/morgen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="morgens"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="100px"
-        />
-    <Button
-        android:id="@+id/mittag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="mittags"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="150px"
-        />
-    <Button
-        android:id="@+id/nachmittag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="nachmittags"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="200px"
-        />
-    <Button
-        android:id="@+id/nacht"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="nachts"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="250px"
-        />
-
 </RelativeLayout>

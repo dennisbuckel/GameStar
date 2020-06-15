@@ -28,6 +28,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     Button schlafen;
     Button saeubern;
 
+    ProgressBar hpbar;
+
     Charakter testCharakter = new Charakter();
 
     int counter = 0;
@@ -44,6 +46,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.gamelayout);
 
         herstellungDerSternes();
+
+        hpbar= (ProgressBar)findViewById(R.id.hpbar);
 
 
 
@@ -86,6 +90,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             handler.postDelayed(timer, 1000);
 
             int hp = testCharakter.getHp();
+            hpbar.setProgress(hp);
+
+
             if(hp==0) {
                 handler.removeCallbacks(timer);
                 sternIstGestorben();

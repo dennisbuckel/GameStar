@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     int backgroundIntervall = 0;
     int showesBackgroundView = 0;
+    int progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.gamelayout);
 
         herstellungDerSternes();
+
+
 
         fuettern = (Button) findViewById(R.id.fuettern);
         schlafen = (Button) findViewById(R.id.schlafen);
@@ -94,6 +98,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         //Hintergrund Tag/Nacht ändern
         final RelativeLayout lin = findViewById(R.id.linear);
+        ProgressBar tagnacht = (ProgressBar) findViewById(R.id.leiste);
 
         if(backgroundIntervall == 9){
 
@@ -101,18 +106,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 case 0:
                     lin.setBackgroundResource(R.drawable.mittags);
                     showesBackgroundView++;
+                    tagnacht.setProgress(30);
                     break;
                 case 1:
                     lin.setBackgroundResource(R.drawable.nachmittags);
                     showesBackgroundView++;
+                    tagnacht.setProgress(60);
                     break;
                  case 2:
                     lin.setBackgroundResource(R.drawable.nachts);
                      showesBackgroundView++;
+                     tagnacht.setProgress(100);
                      break;
                 case 3:
                     lin.setBackgroundResource(R.drawable.morgens);
                     showesBackgroundView = 0;
+                    tagnacht.setProgress(1);
                     break;
             }
             backgroundIntervall = 0;
@@ -123,6 +132,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+
+
 
     public void sternIstGestorben(){
         // navigiert zurück zur MainActivity

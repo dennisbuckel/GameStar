@@ -47,7 +47,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         herstellungDerSternes();
 
-        hpbar= (ProgressBar)findViewById(R.id.hpbar);
+        hpbar = (ProgressBar)findViewById(R.id.hpbar);
 
 
 
@@ -81,9 +81,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             changeBackground();
 
             hp();
-            hunger();
-            sauber();
-            muede();
 
             abnutzung();
             //Toast.makeText(GameActivity.this, "Zähler " + zaehler, Toast.LENGTH_SHORT).show();
@@ -139,9 +136,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-
-
-
 
     public void sternIstGestorben(){
         // navigiert zurück zur MainActivity
@@ -216,7 +210,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 }else{
 
                     testCharakter.isst();
-                    hunger();
 
                 }
                 break;
@@ -239,7 +232,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 }else{
 
                     testCharakter.wirdSauber();
-                    sauber();
 
                 }
 
@@ -260,21 +252,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             counter = 0;
         }
     }
-    public void hunger(){
-        TextView essenNumber = (TextView) findViewById(R.id.textViewEssen);
-        int hungerHp = testCharakter.getHunger();
-        essenNumber.setText("Hunger "+hungerHp);
-    }
-    public void sauber(){
-        TextView sauberNumber = (TextView) findViewById(R.id.textViewSauber);
-        int sauberHp = testCharakter.getSauberkeit();
-        sauberNumber.setText("Sauber "+sauberHp);
-    }
-    public void muede(){
-        TextView energieNumber = (TextView) findViewById(R.id.textViewSchalfen);
-        int energieHp = testCharakter.getEnergie();
-        energieNumber.setText("Schafen "+energieHp);
-    }
+
     public void hp(){
         TextView hpNumber = (TextView) findViewById(R.id.textViewHp);
         int hp = testCharakter.getHp();

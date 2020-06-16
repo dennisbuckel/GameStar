@@ -32,25 +32,6 @@
         android:text="Säubern" />
 
     <TextView
-        android:id="@+id/textViewEssen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"></TextView>
-
-    <TextView
-        android:id="@+id/textViewSchalfen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="300px"
-        android:textSize="30sp"></TextView>
-
-    <TextView
-        android:id="@+id/textViewSauber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="620px"
-        android:textSize="30sp"></TextView>
-    <TextView
         android:id="@+id/textViewHp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,7 +42,8 @@
         android:id="@+id/viewName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:text=""
+        android:textSize="30sp" />
 
     <ProgressBar
         android:id="@+id/leiste"

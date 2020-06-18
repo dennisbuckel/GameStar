@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(schonExistierend != "FALSE"){
 
-            hpReduzieren();
+            hpReduzierenHintergrundsWechsel();
             int hungerHP = speicherung.getInt("hungerHp", 0);
             int sauberkeitsHP = speicherung.getInt("sauberHp", 0);
             int energieHP = speicherung.getInt("energieHp",0);
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("hungerHp", 100);
                 editor.putInt("sauberHp", 100);
                 editor.putInt("energieHp", 100);
+                editor.putInt("hintergrund", 99);
                 editor.commit();
 
             }
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      *   Reduziert die HPs entsprechend der vergangenen Zeit und schreibt die neuen HPs in die Datei
      */
-    public void hpReduzieren(){
+    public void hpReduzierenHintergrundsWechsel(){
         // Deitei öffenen in der die Daten liegen
         SharedPreferences speicherung = getSharedPreferences("SpeicherDatei", 0);
 
@@ -190,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
         int hungerHP = speicherung.getInt("hungerHp", 0);
         int sauberkeitsHP = speicherung.getInt("sauberHp", 0);
         int energieHP = speicherung.getInt("energieHp",0);
+        int hintergrund = speicherung.getInt("hintergrund",0);
 
 
         int aktuelleZeitInSekunden = aktuelleZeitInSekunden();
@@ -198,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Lässt alle verpassten Intervalle aufholen
         int intervallEinheiten = vergangeneSekunden / 5;
+        int intervallEinheitenHintergrund = vergangeneSekunden / 10;
+
         for(int i=0; i<=intervallEinheiten; i++){
 
             hungerHP += -10;
@@ -215,9 +219,23 @@ public class MainActivity extends AppCompatActivity {
             energieHP = 0;
         }
 
+        for(int i=0; i<=intervallEinheitenHintergrund; i++){
+
+           if(hintergrund == 99){
+
+               hintergrund = 0;
+
+           }else {
+
+               hintergrund += 33;
+
+           }
+
+        }
         editor.putInt("hungerHp", hungerHP);
         editor.putInt("sauberHp", sauberkeitsHP);
         editor.putInt("energieHp", energieHP);
+        editor.putInt("hintergrund", hintergrund);
 
         //Speicherung der Daten
         editor.commit();

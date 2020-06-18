@@ -32,12 +32,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     Charakter testCharakter = new Charakter();
 
+    int intervall = 1;
     int counter = 0;
+    int schlafCounter = 0;
 
     String zustand ="Schlafen";
 
     int backgroundIntervall = 0;
-    int showesBackgroundView = 0;
+    int showesBackgroundView;
+    int showesBackgroundProzess = 0;
     int progress;
 
     @Override
@@ -48,8 +51,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         herstellungDerSternes();
 
         hpbar = (ProgressBar)findViewById(R.id.hpbar);
-
-
 
         fuettern = (Button) findViewById(R.id.fuettern);
         schlafen = (Button) findViewById(R.id.schlafen);
@@ -63,9 +64,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         namensAnzeige();
 
-        final RelativeLayout startLin = findViewById(R.id.linear);
-        startLin.setBackgroundResource(R.drawable.morgens);
-
     }
     /**
      * In timer.run() werden alle Methoden in einem 2 Sekunden Intervall aufgerufen
@@ -78,13 +76,23 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             Button muedeButton = (Button) findViewById(R.id.schlafen);
             muedeButton.setText(zustand);
 
-            changeBackground();
+            if(backgroundIntervall == (5*2)){
+                showesBackgroundProzess += 3;
+                changeBackground();
+            }else{
+                backgroundIntervall++;
+                if(showesBackgroundProzess <= 99) {
+                    showesBackgroundProzess += 3;
+                    ProgressBar tagnacht = (ProgressBar) findViewById(R.id.leiste);
+                    tagnacht.setProgress(showesBackgroundProzess);
+                }
+            }
 
             hp();
 
             abnutzung();
             //Toast.makeText(GameActivity.this, "Zähler " + zaehler, Toast.LENGTH_SHORT).show();
-            handler.postDelayed(timer, 1000);
+            handler.postDelayed(timer, 500);
 
             int hp = testCharakter.getHp();
             hpbar.setProgress(hp);
@@ -93,6 +101,31 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             if(hp==0) {
                 handler.removeCallbacks(timer);
                 sternIstGestorben();
+            }
+            if(testCharakter.getEnergie() == 100){
+                zustand = "Schlafen";
+            }
+            TextView z1 = (TextView) findViewById(R.id.schlafZ1);
+            TextView z2 = (TextView) findViewById(R.id.schlafZ2);
+
+            if(zustand == "Aufwäcken"){
+                z1.setText("Z");
+                Toast.makeText(GameActivity.this, "" +schlafCounter, Toast.LENGTH_SHORT).show();
+                if(schlafCounter < 3){
+                    z2.setText("Z");
+                    schlafCounter++;
+                }
+                if(schlafCounter >= 3){
+                    z2.setText("");
+                    schlafCounter++;
+                    if(schlafCounter == 6){
+                        schlafCounter = 0;
+                    }
+                }
+
+            }else{
+                z1.setText("");
+                z2.setText("");
             }
 
         }
@@ -104,37 +137,30 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         final RelativeLayout lin = findViewById(R.id.linear);
         ProgressBar tagnacht = (ProgressBar) findViewById(R.id.leiste);
 
-        if(backgroundIntervall == 9){
-
             switch(showesBackgroundView){
                 case 0:
                     lin.setBackgroundResource(R.drawable.mittags);
-                    showesBackgroundView++;
-                    tagnacht.setProgress(30);
+                    showesBackgroundView = 33;
+                    tagnacht.setProgress(showesBackgroundProzess);
                     break;
-                case 1:
+                case 33:
                     lin.setBackgroundResource(R.drawable.nachmittags);
-                    showesBackgroundView++;
-                    tagnacht.setProgress(60);
+                    showesBackgroundView = 66;
+                    tagnacht.setProgress(showesBackgroundProzess);
                     break;
-                 case 2:
+                 case 66:
                     lin.setBackgroundResource(R.drawable.nachts);
-                     showesBackgroundView++;
-                     tagnacht.setProgress(100);
+                     showesBackgroundView = 99;
+                     tagnacht.setProgress(showesBackgroundProzess);
                      break;
-                case 3:
+                case 99:
                     lin.setBackgroundResource(R.drawable.morgens);
                     showesBackgroundView = 0;
-                    tagnacht.setProgress(1);
+                    showesBackgroundProzess=0;
+                    tagnacht.setProgress(showesBackgroundProzess);
                     break;
             }
             backgroundIntervall = 0;
-        }else{
-
-            backgroundIntervall++;
-
-        }
-
     }
 
     public void sternIstGestorben(){
@@ -150,6 +176,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         editor.putInt("hungerHp", 0);
         editor.putInt("sauberHp", 0);
         editor.putInt("energieHp", 0);
+
         editor.commit();
 
     }
@@ -187,18 +214,29 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         int hungerHP = speicherung.getInt("hungerHp", 100);
         int sauberkeitsHP = speicherung.getInt("sauberHp", 100);
         int energieHP = speicherung.getInt("energieHp",100);
+        int hintergrund = speicherung.getInt("hintergrund",100);
+
         if(hungerHP+sauberkeitsHP+energieHP == 0){
 
             hungerHP = 100;
             sauberkeitsHP = 100;
             energieHP = 100;
+            hintergrund = 99;
 
         }
         testCharakter.updateHungerHp(hungerHP);
         testCharakter.updateSauberkeitHp(sauberkeitsHP);
         testCharakter.updateEnergieHp(energieHP);
 
+
+        showesBackgroundView = hintergrund;
+        //Toast.makeText(GameActivity.this, "" +showesBackgroundView, Toast.LENGTH_SHORT).show();
+        changeBackground();
+        showesBackgroundProzess = showesBackgroundView;
+
+
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -239,7 +277,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     public void abnutzung(){
-        if(counter<5){
+        if(counter<intervall){
             counter++;
         }else{
             if(zustand == "Aufwäcken") {
@@ -251,6 +289,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             testCharakter.wirdHungrig();
             counter = 0;
         }
+
     }
 
     public void hp(){
@@ -293,6 +332,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         editor.putInt("hungerHp", hungerHp);
         editor.putInt("sauberHp", sauberHp);
         editor.putInt("energieHp", energieHp);
+
+        editor.putInt("hintergrund", showesBackgroundView);
 
         //Speicherung der Daten
 

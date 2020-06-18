@@ -4,8 +4,7 @@
     android:id="@+id/linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/fuettern"
@@ -43,6 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
+        android:textColor="#FFFFFF"
         android:textSize="30sp" />
 
     <ProgressBar
@@ -50,11 +50,10 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
-        android:progressTint="@color/cardview_light_background"
+        android:layout_centerInParent="true"
         android:progress="1"
-        />
+        android:progressTint="@color/cardview_light_background" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -62,8 +61,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="1100px"
         android:text="Morgen"
-        android:textColor="@color/cardview_light_background"
-        />
+        android:textColor="@color/cardview_light_background" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -71,8 +69,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="1100px"
         android:text="Nacht"
-        android:textColor="@color/cardview_light_background"
-        />
+        android:textColor="@color/cardview_light_background" />
 
     <ProgressBar
         android:id="@+id/hpbar"
@@ -93,5 +90,24 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="347dp"
         app:srcCompat="@drawable/stern_phase3_1" />
+
+    <TextView
+        android:id="@+id/schlafZ1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:layout_marginStart="500px"
+        android:layout_marginTop="350px"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/schlafZ2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="540px"
+        android:layout_marginTop="300px"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp" />
 
 </RelativeLayout>

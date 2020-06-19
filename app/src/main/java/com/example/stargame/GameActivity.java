@@ -105,32 +105,44 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             if(testCharakter.getEnergie() == 100){
                 zustand = "Schlafen";
             }
-            TextView z1 = (TextView) findViewById(R.id.schlafZ1);
-            TextView z2 = (TextView) findViewById(R.id.schlafZ2);
 
-            if(zustand == "Aufwäcken"){
-                z1.setText("Z");
-                Toast.makeText(GameActivity.this, "" +schlafCounter, Toast.LENGTH_SHORT).show();
-                if(schlafCounter < 3){
-                    z2.setText("Z");
-                    schlafCounter++;
-                }
-                if(schlafCounter >= 3){
-                    z2.setText("");
-                    schlafCounter++;
-                    if(schlafCounter == 6){
-                        schlafCounter = 0;
-                    }
-                }
-
-            }else{
-                z1.setText("");
-                z2.setText("");
-            }
+            SternSchlafAnimation();
 
         }
     };
+    /**
+     * Schlafanimation des Sternes
+     */
+    public void SternSchlafAnimation(){
 
+        TextView z1 = (TextView) findViewById(R.id.schlafZ1);
+        TextView z2 = (TextView) findViewById(R.id.schlafZ2);
+
+        if(zustand == "Aufwäcken"){
+            z1.setText("Z");
+            Toast.makeText(GameActivity.this, "" +schlafCounter, Toast.LENGTH_SHORT).show();
+            if(schlafCounter < 3){
+                z2.setText("Z");
+                schlafCounter++;
+            }
+            if(schlafCounter >= 3){
+                z2.setText("");
+                schlafCounter++;
+                if(schlafCounter == 6){
+                    schlafCounter = 0;
+                }
+            }
+
+        }else{
+            z1.setText("");
+            z2.setText("");
+        }
+
+
+    }
+    /**
+     * Ändert den Hintergrund und zeigt den Fortschritt dessen an
+     */
     public void changeBackground(){
 
         //Hintergrund Tag/Nacht ändern
@@ -163,6 +175,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             backgroundIntervall = 0;
     }
 
+    /**
+     * Vorkehrungen beim Tod des Sternes
+     */
     public void sternIstGestorben(){
         // navigiert zurück zur MainActivity
         Intent intent = new Intent(this, MainActivity.class);
@@ -182,7 +197,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
     /**
      * Zeigt den Namen das Sternes an
-     *
      */
     public void namensAnzeige(){
 
@@ -214,7 +228,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         int hungerHP = speicherung.getInt("hungerHp", 100);
         int sauberkeitsHP = speicherung.getInt("sauberHp", 100);
         int energieHP = speicherung.getInt("energieHp",100);
-        int hintergrund = speicherung.getInt("hintergrund",100);
+        int hintergrund = speicherung.getInt("hintergrund",99);
 
         if(hungerHP+sauberkeitsHP+energieHP == 0){
 

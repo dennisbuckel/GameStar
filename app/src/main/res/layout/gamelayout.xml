@@ -28,7 +28,8 @@
         android:layout_height="80px"
         android:layout_marginStart="560px"
         android:layout_marginTop="900px"
-        android:text="Säubern" />
+        android:text="Säubern"
+        />
 
     <TextView
         android:id="@+id/textViewHp"

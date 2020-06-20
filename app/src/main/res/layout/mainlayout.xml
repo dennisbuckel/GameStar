@@ -1,23 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/startpage"
+    >
+
+
+
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/start"
         android:text="Start"
+        android:layout_marginTop="820dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="50dp"
+
+
+
         />
+
+    <TextView
+        android:id="@+id/star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="300dp"
+        android:fontFamily="@font/bowlby_one"
+        android:text="STAR"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="80dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/txttamagotchi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dp"
+        android:layout_marginLeft="80dp"
+        android:text="TAMAGOTCHI"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="80dp"
+        android:fontFamily="@font/bowlby_one"
+        android:layout_centerHorizontal="true"
+
+        />
+
+    <TextView
+        android:id="@+id/game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GAME"
+        android:layout_marginTop="500dp"
+        android:layout_marginLeft="100dp"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="80dp"
+        android:fontFamily="@font/bowlby_one"
+        android:layout_centerHorizontal="true"
+        />
+
+
+
 
     <EditText
         android:id="@+id/name"
-        android:layout_width="319dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="250px"
-        android:layout_marginTop="500px"
-        android:ems="10"
-        android:inputType="textPersonName" />
+        android:layout_centerHorizontal="true"
 
-</LinearLayout>
+        android:layout_marginTop="750dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="@color/cardview_light_background"
+        />
+
+</RelativeLayout>

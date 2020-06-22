@@ -3,6 +3,7 @@ package com.example.stargame;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -42,6 +43,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     int showesBackgroundView;
     int showesBackgroundProzess = 0;
     int progress;
+
+    MediaPlayer eatingPlayer;
+    MediaPlayer sleepingPlayer;
+    MediaPlayer wakingUpPlayer;
+    MediaPlayer washingPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +126,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         TextView z2 = (TextView) findViewById(R.id.schlafZ2);
 
         if(zustand == "Aufwäcken"){
+            playSleepingSound();
+            stopEatingPlayer();
+            stopWashingPlayer();
             z1.setText("Z");
-            Toast.makeText(GameActivity.this, "" +schlafCounter, Toast.LENGTH_SHORT).show();
             if(schlafCounter < 3){
                 z2.setText("Z");
                 schlafCounter++;
@@ -134,6 +143,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }else{
+            stopSleepingPlayer();
             z1.setText("");
             z2.setText("");
         }
@@ -262,6 +272,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 }else{
 
                     testCharakter.isst();
+                    playEatingSound();
 
                 }
                 break;
@@ -284,9 +295,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 }else{
 
                     testCharakter.wirdSauber();
-
+                    playWashingSound();
                 }
-
                 break;
         }
     }
@@ -306,6 +316,117 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    public void playEatingSound(){
+
+        if(eatingPlayer == null){
+
+            eatingPlayer = MediaPlayer.create(this, R.raw.eating);
+            eatingPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopEatingPlayer();
+                }
+            });
+
+        }
+        eatingPlayer.start();
+        stopWashingPlayer();
+    }
+
+    private void stopEatingPlayer(){
+
+        if(eatingPlayer != null){
+
+            //Sound stoppen und den Mediaplayer beenden
+            eatingPlayer.release();
+            eatingPlayer = null;
+
+        }
+
+    }
+    public void playWashingSound(){
+
+        if(washingPlayer == null){
+
+            washingPlayer = MediaPlayer.create(this, R.raw.washing);
+            washingPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopWashingPlayer();
+                }
+            });
+
+        }
+        washingPlayer.start();
+        stopEatingPlayer();
+    }
+
+    private void stopWashingPlayer(){
+
+        if(washingPlayer != null){
+
+            //Sound stoppen und den Mediaplayer beenden
+            washingPlayer.release();
+            washingPlayer = null;
+
+        }
+
+    }
+    public void playSleepingSound(){
+
+        if(sleepingPlayer == null){
+
+            sleepingPlayer = MediaPlayer.create(this, R.raw.sleeping);
+            sleepingPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopSleepingPlayer();
+                }
+            });
+
+        }
+        sleepingPlayer.start();
+    }
+
+    private void stopSleepingPlayer(){
+
+        if(sleepingPlayer != null){
+
+            //Sound stoppen und den Mediaplayer beenden
+            sleepingPlayer.release();
+            sleepingPlayer = null;
+
+        }
+
+    }
+    public void playWakingUpSound(){
+
+        if(wakingUpPlayer == null){
+
+            wakingUpPlayer = MediaPlayer.create(this, R.raw.eating);
+            wakingUpPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopWakingUpPlayer();
+                }
+            });
+
+        }
+        wakingUpPlayer.start();
+    }
+
+    private void stopWakingUpPlayer(){
+
+        if(wakingUpPlayer != null){
+
+            //Sound stopen und den Mediaplayer beenden
+            wakingUpPlayer.release();
+            wakingUpPlayer = null;
+
+        }
+
+    }
+
     public void hp(){
         TextView hpNumber = (TextView) findViewById(R.id.textViewHp);
         int hp = testCharakter.getHp();
@@ -315,6 +436,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStop() {
         super.onStop();
+
+        // Stoppt Sounds
+        stopEatingPlayer();
 
         //Aktueller Tag
         Calendar calendar = Calendar.getInstance();

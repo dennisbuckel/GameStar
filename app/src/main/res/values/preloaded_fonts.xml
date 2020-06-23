@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/baloo</item>
         <item>@font/bowlby_one</item>
+        <item>@font/kavoon</item>
+        <item>@font/space_mono</item>
+        <item>@font/stalinist_one</item>
+        <item>@font/stardos_stencil_bold</item>
     </array>
 </resources>

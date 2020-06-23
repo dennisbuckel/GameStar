@@ -2,6 +2,7 @@ package com.example.stargame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
@@ -10,7 +11,9 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,18 +44,18 @@ public class MainActivity extends AppCompatActivity {
 
         String schonExistierend = speicherung.getString("tag", "FALSE");
 
-        if(schonExistierend != "FALSE"){
+        if (schonExistierend != "FALSE") {
 
             hpReduzierenHintergrundsWechsel();
             int hungerHP = speicherung.getInt("hungerHp", 0);
             int sauberkeitsHP = speicherung.getInt("sauberHp", 0);
-            int energieHP = speicherung.getInt("energieHp",0);
+            int energieHP = speicherung.getInt("energieHp", 0);
 
-            if((hungerHP + sauberkeitsHP +energieHP) > 0){
+            if ((hungerHP + sauberkeitsHP + energieHP) > 0) {
 
                 launchActivity();
 
-            }else{
+            } else {
                 Toast.makeText(MainActivity.this, " Wo waren Sie?... Hier Stern ist gestorben!", Toast.LENGTH_SHORT).show();
                 editor.putInt("hungerHp", 100);
                 editor.putInt("sauberHp", 100);
@@ -66,8 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
         namensEingabe();
 
-    }
 
+
+    }
     public void launchActivity(){
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
@@ -89,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         String nameTextString = nameText.getText().toString();
         if(name == "FALSE"){
 
-            nameText.setText("Geben Sie Ihren Stern einen Namen...");
+            nameText.setText("enter name...");
 
         }else{
 
@@ -241,6 +245,10 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
 
     }
+
+
+
+
 
 
 

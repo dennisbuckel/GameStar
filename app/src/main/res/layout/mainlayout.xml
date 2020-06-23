@@ -1,27 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/startpage"
+    android:background="@drawable/background"
     >
 
 
 
-
-    <Button
+    <ImageView
+        android:id="@+id/komet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/start"
-        android:text="Start"
-        android:layout_marginTop="820dp"
-        android:layout_centerHorizontal="true"
-        android:textSize="50dp"
-
-
+        android:src="@drawable/komet"
 
         />
+
+    <ImageView
+        android:id="@+id/komet2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/komet"
+        android:layout_marginTop="900dp"
+         />
+
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="900dp"
+        android:background="@color/Silver"
+        android:fontFamily="@font/stalinist_one"
+        android:text="Start"
+        android:textColor="@color/WhiteSmoke"
+
+
+        android:textSize="50dp" />
 
     <TextView
         android:id="@+id/star"
@@ -31,7 +49,7 @@
         android:layout_marginTop="300dp"
         android:fontFamily="@font/bowlby_one"
         android:text="STAR"
-        android:textColor="@color/cardview_light_background"
+        android:textColor="@color/Yellow"
         android:textSize="80dp"
         android:layout_centerHorizontal="true"
         />
@@ -43,7 +61,7 @@
         android:layout_marginTop="400dp"
         android:layout_marginLeft="80dp"
         android:text="TAMAGOTCHI"
-        android:textColor="@color/cardview_light_background"
+        android:textColor="@color/Silver"
         android:textSize="80dp"
         android:fontFamily="@font/bowlby_one"
         android:layout_centerHorizontal="true"
@@ -57,7 +75,7 @@
         android:text="GAME"
         android:layout_marginTop="500dp"
         android:layout_marginLeft="100dp"
-        android:textColor="@color/cardview_light_background"
+        android:textColor="@color/Yellow"
         android:textSize="80dp"
         android:fontFamily="@font/bowlby_one"
         android:layout_centerHorizontal="true"
@@ -71,11 +89,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-
         android:layout_marginTop="750dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:textColor="@color/cardview_light_background"
+        android:textAlignment="center"
         />
 
 </RelativeLayout>

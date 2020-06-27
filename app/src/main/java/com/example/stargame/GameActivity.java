@@ -46,9 +46,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     MediaPlayer eatingPlayer;
     MediaPlayer sleepingPlayer;
-    MediaPlayer wakingUpPlayer;
     MediaPlayer washingPlayer;
-
+    MediaPlayer backgroundPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +69,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         timer.run();
 
         namensAnzeige();
+
+        playBackgroundSound();
 
     }
     /**
@@ -300,6 +301,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+    /**
+     * Regelt die Abnutzung des Sternes
+     */
     public void abnutzung(){
         if(counter<intervall){
             counter++;
@@ -315,7 +319,47 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+    /**
+     *   Regelt die Hintergrungmusik der App
+     */
+    public void playBackgroundSound(){
 
+        if(backgroundPlayer == null){
+
+            backgroundPlayer = MediaPlayer.create(this, R.raw.background);
+            backgroundPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    backgroundPlayer.release();
+                    backgroundPlayer = null;
+                    playBackgroundSound();
+                }
+            });
+
+        }
+        backgroundPlayer.setVolume(0.1f, 0.1f);
+        backgroundPlayer.start();
+
+    }
+
+    /**
+     *   Regelt das Stoppen der Hintergrungmusik der App
+     */
+    private void stopBackgroundPlayer(){
+
+        if(backgroundPlayer != null){
+
+            //Sound stoppen und den Mediaplayer beenden
+            backgroundPlayer.release();
+            backgroundPlayer = null;
+
+        }
+
+    }
+
+    /**
+     *   Regelt die Essenssoundeffekte der App
+     */
     public void playEatingSound(){
 
         if(eatingPlayer == null){
@@ -329,10 +373,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             });
 
         }
+        eatingPlayer.setVolume(1, 1);
         eatingPlayer.start();
         stopWashingPlayer();
     }
 
+    /**
+     *   Regelt das Stoppen der Essenssoundeffekte der App
+     */
     private void stopEatingPlayer(){
 
         if(eatingPlayer != null){
@@ -344,6 +392,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+    /**
+     *   Regelt die Säuberungssoundeffekte der App
+     */
     public void playWashingSound(){
 
         if(washingPlayer == null){
@@ -357,10 +409,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             });
 
         }
+        washingPlayer.setVolume(1, 1);
         washingPlayer.start();
         stopEatingPlayer();
     }
 
+    /**
+     *   Regelt das Stoppen der Säuberungssoundeffekte der App
+     */
     private void stopWashingPlayer(){
 
         if(washingPlayer != null){
@@ -372,6 +428,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+    /**
+     *   Regelt die Schlafsoundeffekte der App
+     */
     public void playSleepingSound(){
 
         if(sleepingPlayer == null){
@@ -385,9 +445,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             });
 
         }
+        sleepingPlayer.setVolume(1, 1);
         sleepingPlayer.start();
     }
 
+    /**
+     *   Regelt das Stoppen der Schlafsoundeffekte der App
+     */
     private void stopSleepingPlayer(){
 
         if(sleepingPlayer != null){
@@ -399,34 +463,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-    public void playWakingUpSound(){
 
-        if(wakingUpPlayer == null){
-
-            wakingUpPlayer = MediaPlayer.create(this, R.raw.eating);
-            wakingUpPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    stopWakingUpPlayer();
-                }
-            });
-
-        }
-        wakingUpPlayer.start();
-    }
-
-    private void stopWakingUpPlayer(){
-
-        if(wakingUpPlayer != null){
-
-            //Sound stopen und den Mediaplayer beenden
-            wakingUpPlayer.release();
-            wakingUpPlayer = null;
-
-        }
-
-    }
-
+    /**
+     * Zeigt die Hp inm der App an
+     */
     public void hp(){
         TextView hpNumber = (TextView) findViewById(R.id.textViewHp);
         int hp = testCharakter.getHp();
@@ -439,6 +479,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         // Stoppt Sounds
         stopEatingPlayer();
+        stopWashingPlayer();
+        stopSleepingPlayer();
+        stopBackgroundPlayer();
+
 
         //Aktueller Tag
         Calendar calendar = Calendar.getInstance();

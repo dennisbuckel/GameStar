@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         String nameTextString = nameText.getText().toString();
         if(name == "FALSE"){
 
-            nameText.setText("enter name...");
+            nameText.setText("Enter name...");
 
         }else{
 
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         EditText nameText = (EditText) findViewById(R.id.name);
         String nameTextString = nameText.getText().toString();
 
-        if(nameTextString.equals("Geben Sie Ihren Stern einen Namen...")){
+        if(nameTextString.equals("Enter name...")){
 
             //Default Name
             nameTextString = "Jonny";

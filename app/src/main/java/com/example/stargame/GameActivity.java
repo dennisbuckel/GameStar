@@ -1,12 +1,18 @@
 package com.example.stargame;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,15 +25,17 @@ import java.text.DateFormat;
 import java.util.Calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class GameActivity extends AppCompatActivity implements View.OnClickListener {
+public class GameActivity extends AppCompatActivity implements View.OnDragListener, View.OnTouchListener{
 
-    Button fuettern;
-    Button schlafen;
-    Button saeubern;
+    ImageView fuettern;
+    ImageView schlafen;
+    ImageView saeubern;
+    ImageView destination;
 
     ProgressBar hpbar;
 
@@ -58,14 +66,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         hpbar = (ProgressBar)findViewById(R.id.hpbar);
 
-        fuettern = (Button) findViewById(R.id.fuettern);
-        schlafen = (Button) findViewById(R.id.schlafen);
-        saeubern = (Button) findViewById(R.id.saeubern);
+        fuettern = (ImageView) findViewById(R.id.fuettern);
+        schlafen = (ImageView) findViewById(R.id.schlafen);
+        saeubern = (ImageView) findViewById(R.id.saeubern);
+        destination = findViewById(R.id.imgDestination);
 
-        fuettern.setOnClickListener(this);
-        schlafen.setOnClickListener(this);
-        saeubern.setOnClickListener(this);
-        Button muedeButton = (Button) findViewById(R.id.schlafen);
+        fuettern.setOnTouchListener(this);
+        schlafen.setOnTouchListener(this);
+        saeubern.setOnTouchListener(this);
+        destination.setOnDragListener(this);
+
+
+
+        ImageView muedeButton = (ImageView) findViewById(R.id.schlafen);
         timer.run();
 
         namensAnzeige();
@@ -81,8 +94,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Runnable timer = new Runnable() {
         @Override
         public void run() {
-            Button muedeButton = (Button) findViewById(R.id.schlafen);
-            muedeButton.setText(zustand);
+            ImageView muedeButton = (ImageView) findViewById(R.id.schlafen);
+            //muedeButton.setText(zustand);
 
             if(backgroundIntervall == (5*2)){
                 showesBackgroundProzess += 3;
@@ -262,45 +275,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.fuettern:
-                if(zustand == "Aufwäcken") {
-
-                    Toast.makeText(GameActivity.this, "Sie müssen den Stern erst aufwäcken...", Toast.LENGTH_SHORT).show();
-
-                }else{
-
-                    testCharakter.isst();
-                    playEatingSound();
-
-                }
-                break;
-            case R.id.schlafen:
-                if(zustand == "Schlafen") {
-
-                    zustand = "Aufwäcken";
-
-                }else{
-
-                    zustand = "Schlafen";
-
-                }
-                break;
-            case R.id.saeubern:
-                if(zustand == "Aufwäcken") {
-
-                    Toast.makeText(GameActivity.this, "Sie müssen den Stern erst aufwäcken...", Toast.LENGTH_SHORT).show();
-
-                }else{
-
-                    testCharakter.wirdSauber();
-                    playWashingSound();
-                }
-                break;
-        }
-    }
     /**
      * Regelt die Abnutzung des Sternes
      */
@@ -523,5 +497,135 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    @Override
+    public boolean onDrag(View v, DragEvent event) {
+        switch (event.getAction()) {
+            case DragEvent.ACTION_DRAG_STARTED:
 
+                ((ImageView) v).setColorFilter(Color.YELLOW);
+
+
+                v.invalidate();
+                return true;
+
+            case DragEvent.ACTION_DRAG_ENTERED:
+
+                String clipData = event.getClipDescription().getLabel().toString();
+                switch (v.getId()) {
+                    case R.id.fuettern:
+                        if(zustand == "Aufwäcken") {
+
+                        Toast.makeText(GameActivity.this, "Sie müssen den Stern erst aufwäcken...", Toast.LENGTH_SHORT).show();
+
+                    }else{
+
+                        testCharakter.wirdSauber();
+                        playWashingSound();
+                    }
+                        ((ImageView) v).setColorFilter(ContextCompat.getColor(GameActivity.this, R.color.Silver), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        break;
+                    case R.id.schlafen:
+                        if(zustand == "Schlafen") {
+
+                            zustand = "Aufwäcken";
+
+                        }else{
+
+                            zustand = "Schlafen";
+
+                        }
+                        ((ImageView) v).setColorFilter(ContextCompat.getColor(GameActivity.this, R.color.Silver), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        break;
+                    case R.id.saeubern:
+                        if(zustand == "Aufwäcken") {
+
+                            Toast.makeText(GameActivity.this, "Sie müssen den Stern erst aufwäcken...", Toast.LENGTH_SHORT).show();
+
+                        }else{
+
+                            testCharakter.isst();
+                            playEatingSound();
+
+                        }
+                        ((ImageView) v).setColorFilter(ContextCompat.getColor(GameActivity.this, R.color.Silver), android.graphics.PorterDuff.Mode.MULTIPLY);
+                }
+
+                v.invalidate();
+                return true;
+
+            case DragEvent.ACTION_DRAG_LOCATION:
+                return true;
+
+            case DragEvent.ACTION_DRAG_EXITED:
+
+                ((ImageView) v).clearColorFilter();
+                ((ImageView) v).setColorFilter(Color.YELLOW);
+
+                v.invalidate();
+                return true;
+
+            case DragEvent.ACTION_DROP:
+
+
+                clipData = event.getClipDescription().getLabel().toString();
+                Toast.makeText(getApplicationContext(),clipData, Toast.LENGTH_SHORT).show();
+
+                v.invalidate();
+                return true;
+
+            case DragEvent.ACTION_DRAG_ENDED:
+
+
+                ((ImageView) v).clearColorFilter();
+                if (event.getResult()) {
+                    Toast.makeText(GameActivity.this, "Awesome!", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(GameActivity.this, "Aw Snap! Try dropping it again", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        View.DragShadowBuilder mShadow = new View.DragShadowBuilder(v);
+        ClipData.Item item = new ClipData.Item(v.getTag().toString());
+        String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
+        ClipData data = new ClipData(v.getTag().toString(), mimeTypes, item);
+
+        switch (v.getId()) {
+            case R.id.schlafen:
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    v.startDragAndDrop(data, mShadow, null, 0);
+                } else {
+                    v.startDrag(data, mShadow, null, 0);
+                }
+
+                break;
+            case R.id.fuettern:
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    v.startDragAndDrop(data, mShadow, null, 0);
+                } else {
+                    v.startDrag(data, mShadow, null, 0);
+                }
+                break;
+
+            case R.id.saeubern  :
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    v.startDragAndDrop(data, mShadow, null, 0);
+                } else {
+                    v.startDrag(data, mShadow, null, 0);
+                }
+                break;
+        }
+
+        return false;
+    }
 }

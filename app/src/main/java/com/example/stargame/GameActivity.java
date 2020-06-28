@@ -502,29 +502,38 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
         switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED:
 
-                ((ImageView) v).setColorFilter(Color.YELLOW);
-
-
                 v.invalidate();
                 return true;
 
             case DragEvent.ACTION_DRAG_ENTERED:
 
+                v.invalidate();
+                return true;
+
+            case DragEvent.ACTION_DRAG_LOCATION:
+                return true;
+
+            case DragEvent.ACTION_DRAG_EXITED:
+
+                v.invalidate();
+                return true;
+
+            case DragEvent.ACTION_DROP:
                 String clipData = event.getClipDescription().getLabel().toString();
-                switch (v.getId()) {
-                    case R.id.fuettern:
+                switch (clipData) {
+                    case "shower":
                         if(zustand == "Aufwäcken") {
 
-                        Toast.makeText(GameActivity.this, "Sie müssen den Stern erst aufwäcken...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GameActivity.this, "Sie müssen den Stern erst aufwäcken...", Toast.LENGTH_SHORT).show();
 
-                    }else{
+                        }else{
 
-                        testCharakter.wirdSauber();
-                        playWashingSound();
-                    }
-                        ((ImageView) v).setColorFilter(ContextCompat.getColor(GameActivity.this, R.color.Silver), android.graphics.PorterDuff.Mode.MULTIPLY);
+                            testCharakter.wirdSauber();
+                            playWashingSound();
+                        }
+
                         break;
-                    case R.id.schlafen:
+                    case "sleep":
                         if(zustand == "Schlafen") {
 
                             zustand = "Aufwäcken";
@@ -534,9 +543,9 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
                             zustand = "Schlafen";
 
                         }
-                        ((ImageView) v).setColorFilter(ContextCompat.getColor(GameActivity.this, R.color.Silver), android.graphics.PorterDuff.Mode.MULTIPLY);
+
                         break;
-                    case R.id.saeubern:
+                    case "food":
                         if(zustand == "Aufwäcken") {
 
                             Toast.makeText(GameActivity.this, "Sie müssen den Stern erst aufwäcken...", Toast.LENGTH_SHORT).show();
@@ -547,41 +556,16 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
                             playEatingSound();
 
                         }
-                        ((ImageView) v).setColorFilter(ContextCompat.getColor(GameActivity.this, R.color.Silver), android.graphics.PorterDuff.Mode.MULTIPLY);
                 }
 
-                v.invalidate();
-                return true;
-
-            case DragEvent.ACTION_DRAG_LOCATION:
-                return true;
-
-            case DragEvent.ACTION_DRAG_EXITED:
-
-                ((ImageView) v).clearColorFilter();
-                ((ImageView) v).setColorFilter(Color.YELLOW);
-
-                v.invalidate();
-                return true;
-
-            case DragEvent.ACTION_DROP:
-
-
-                clipData = event.getClipDescription().getLabel().toString();
-                Toast.makeText(getApplicationContext(),clipData, Toast.LENGTH_SHORT).show();
 
                 v.invalidate();
                 return true;
 
             case DragEvent.ACTION_DRAG_ENDED:
 
-
-                ((ImageView) v).clearColorFilter();
-                if (event.getResult()) {
-                    Toast.makeText(GameActivity.this, "Awesome!", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    Toast.makeText(GameActivity.this, "Aw Snap! Try dropping it again", Toast.LENGTH_SHORT).show();
+                if (event.getResult()==false) {
+                    Toast.makeText(GameActivity.this, "Daneben, probiere es nochmal!!", Toast.LENGTH_SHORT).show();
                 }
                 return true;
 
@@ -601,28 +585,16 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
             case R.id.schlafen:
 
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    v.startDragAndDrop(data, mShadow, null, 0);
-                } else {
-                    v.startDrag(data, mShadow, null, 0);
-                }
+                v.startDragAndDrop(data, mShadow, null, 0);
 
                 break;
             case R.id.fuettern:
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    v.startDragAndDrop(data, mShadow, null, 0);
-                } else {
-                    v.startDrag(data, mShadow, null, 0);
-                }
+                v.startDragAndDrop(data, mShadow, null, 0);
                 break;
 
             case R.id.saeubern  :
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    v.startDragAndDrop(data, mShadow, null, 0);
-                } else {
-                    v.startDrag(data, mShadow, null, 0);
-                }
+                v.startDragAndDrop(data, mShadow, null, 0);
                 break;
         }
 

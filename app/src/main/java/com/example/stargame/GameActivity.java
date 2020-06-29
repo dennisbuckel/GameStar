@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +37,10 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
     ImageView schlafen;
     ImageView saeubern;
     ImageView destination;
+    ImageView stern;
+
+
+
 
     ProgressBar hpbar;
 
@@ -44,6 +49,7 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
     int intervall = 1;
     int counter = 0;
     int schlafCounter = 0;
+    int tick=0;
 
     String zustand ="Schlafen";
 
@@ -69,12 +75,15 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
         fuettern = (ImageView) findViewById(R.id.fuettern);
         schlafen = (ImageView) findViewById(R.id.schlafen);
         saeubern = (ImageView) findViewById(R.id.saeubern);
-        destination = findViewById(R.id.imgDestination);
+        destination = findViewById(R.id.stern);
+        stern= findViewById(R.id.stern);
 
         fuettern.setOnTouchListener(this);
         schlafen.setOnTouchListener(this);
         saeubern.setOnTouchListener(this);
         destination.setOnDragListener(this);
+
+
 
 
 
@@ -110,13 +119,20 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
             }
 
             hp();
+            moving(stern, tick);
+
 
             abnutzung();
+            int hp = testCharakter.getHp();
+            hpbar.setProgress(hp);
+
+            updateImage(stern);
+            updateEating(stern);
             //Toast.makeText(GameActivity.this, "Zähler " + zaehler, Toast.LENGTH_SHORT).show();
             handler.postDelayed(timer, 500);
 
-            int hp = testCharakter.getHp();
-            hpbar.setProgress(hp);
+
+
 
 
             if(hp==0) {
@@ -128,6 +144,11 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
             }
 
             SternSchlafAnimation();
+
+            if (tick==9)
+                tick=0;
+            else
+                tick++;
 
         }
     };
@@ -267,6 +288,8 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
         testCharakter.updateEnergieHp(energieHP);
 
 
+
+
         showesBackgroundView = hintergrund;
         //Toast.makeText(GameActivity.this, "" +showesBackgroundView, Toast.LENGTH_SHORT).show();
         changeBackground();
@@ -279,18 +302,27 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
      * Regelt die Abnutzung des Sternes
      */
     public void abnutzung(){
-        if(counter<intervall){
-            counter++;
-        }else{
-            if(zustand == "Aufwäcken") {
+
+            if (zustand.equals("Aufwäcken")) {
                 testCharakter.schlaeft();
-            }else {
-                testCharakter.wirdMuede();
+
             }
-            testCharakter.wirdDreckig();
-            testCharakter.wirdHungrig();
-            counter = 0;
-        }
+            else if (zustand.equals("Schlafen") && counter<intervall) {
+
+                    testCharakter.wirdDreckig();
+                    testCharakter.wirdHungrig();
+                    testCharakter.wirdMuede();
+                    counter++;
+
+
+
+            }else if (counter==5) {
+                counter = 0;
+            }
+            else
+                counter++;
+
+
 
     }
     /**
@@ -541,6 +573,7 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
                         }else{
 
                             zustand = "Schlafen";
+                            updateImage(stern);
 
                         }
 
@@ -600,4 +633,107 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
 
         return false;
     }
+    public void moving(View v,int tick) {
+        Float posX = v.getX();
+        Float posY = v.getY();
+
+        if (zustand.equals("Schlafen")) {
+            if (tick < 5) {
+                posX += 1;
+
+            } else if (tick >= 5) {
+                posX -= 1;
+
+            }
+        }
+
+        v.setX(posX);
+
+    }
+    public void updateImage(ImageView v){
+        int hp= testCharakter.getHp();
+
+        if(testCharakter.istDreckig() && !testCharakter.istMuede() && !testCharakter.istSehrMuede()){
+            if (zustand=="Schlafen")
+                v.setImageResource(R.drawable.stern1_1);
+            else
+                v.setImageResource(R.drawable.stern1_1_schlaeft);
+
+        }
+        else if (testCharakter.istDreckig() && testCharakter.istMuede()){
+            if (zustand=="Schlafen")
+                v.setImageResource(R.drawable.stern2_1);
+            else
+                v.setImageResource(R.drawable.stern2_1_schlaeft);
+
+        }
+        else if (testCharakter.istMuede() && !testCharakter.istDreckig()){
+           if (zustand=="Schlafen")
+               v.setImageResource(R.drawable.stern_2);
+           else
+               v.setImageResource(R.drawable.stern2_schlaeft);
+        }
+        else if (testCharakter.istSauber() && testCharakter.istAusgeschlafen()){
+            if (zustand=="Schlafen")
+                v.setImageResource(R.drawable.stern_1);
+            else
+                v.setImageResource(R.drawable.stern_1_schlaeft);
+        }
+
+
+        else if (!testCharakter.istSehrDreckig() && testCharakter.istSehrMuede()){
+            if (zustand=="Schlafen")
+                v.setImageResource(R.drawable.stern_3);
+            else
+                v.setImageResource(R.drawable.stern3s);
+        }
+        else if (testCharakter.istSehrDreckig() && testCharakter.istSehrMuede()){
+            if (zustand=="Schlafen")
+                v.setImageResource(R.drawable.stern3_1);
+            else
+                v.setImageResource(R.drawable.stern3_1_schlaeft);
+        }
+        else if (testCharakter.istSehrMuede() && testCharakter.istDreckig()){
+            if (zustand=="Schlafen")
+                v.setImageResource(R.drawable.stern3_1);
+            else
+                v.setImageResource(R.drawable.stern3_1_schlaeft);
+
+        }
+
+
+
+
+
+
+    }
+    public void updateEating (ImageView v){
+        ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) v.getLayoutParams();
+
+        if (testCharakter.hatHunger()) {
+            params.width= 400;
+            params.height= 400;
+            v.setLayoutParams(params);
+        }
+        else if (testCharakter.hatVielHunger()){
+            params.width=350;
+            params.height=350;
+            v.setLayoutParams(params);
+
+        }
+        else{
+            params.width=450;
+            params.height=450;
+            v.setLayoutParams(params);
+        }
+
+    }
+
+
+
+
+
+
+
+
 }

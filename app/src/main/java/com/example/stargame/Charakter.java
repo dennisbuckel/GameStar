@@ -1,23 +1,63 @@
 package com.example.stargame;
 
+import android.widget.ImageView;
+
 public class Charakter {
     //IV
+    float posX;
+    float posY;
+
+
     private String name;
     private int hunger;
     private int energie;
     private int sauberkeit;
     private int hp;
+
+    boolean istAusgeschlafen(){
+        if (this.energie > 90)
+            return true;
+        else
+            return false;
+    }
+    boolean istSauber(){
+        if (this.sauberkeit > 90)
+            return true;
+        else
+            return false;
+    }
+    boolean istSatt(){
+        if (this.hunger > 90)
+            return true;
+        else
+            return false;
+    }
+
+    boolean hatVielHunger(){
+        boolean hatHunger=false;
+        if(this.hunger<=60) return true;
+        else return false;
+    }
+    boolean istSehrDreckig(){
+        if(this.sauberkeit<=60) return true;
+        else return false;
+    }
+    boolean istSehrMuede(){
+        if(this.energie<=60)return true;
+        else return false;
+    }
+
     boolean hatHunger(){
         boolean hatHunger=false;
-        if(this.energie<=50) return true;
+        if(this.hunger<=90 && this.hunger>60) return true;
         else return false;
     }
     boolean istDreckig(){
-        if(this.sauberkeit<=50) return true;
+        if(this.sauberkeit<=90 && this.sauberkeit> 60) return true;
         else return false;
     }
     boolean istMuede(){
-        if(this.energie<=50)return true;
+        if(this.energie<=90&& this.energie> 60)return true;
         else return false;
     }
     //Constructor
@@ -124,6 +164,20 @@ public class Charakter {
 
         this.name = _name;
 
+    }
+
+    public void setPosX(float _posX){
+        this.posX=_posX;
+    }
+    public void setPosY(float _posY){
+        this.posY=_posY;
+    }
+
+    public float getPosX(){
+        return this.posX;
+    }
+    public float getPosY(){
+        return this.posY;
     }
 
 }

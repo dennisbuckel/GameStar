@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 launchActivity();
                 speicherDesNamens();
+                geburtsZeit();
             }
         });
 
@@ -56,12 +57,16 @@ public class MainActivity extends AppCompatActivity {
                 launchActivity();
 
             } else {
-                Toast.makeText(MainActivity.this, " Wo waren Sie?... Hier Stern ist gestorben!", Toast.LENGTH_SHORT).show();
-                editor.putInt("hungerHp", 100);
-                editor.putInt("sauberHp", 100);
-                editor.putInt("energieHp", 100);
-                editor.putInt("hintergrund", 99);
-                editor.commit();
+                int ueberlebteZeit = speicherung.getInt("ueberlebteZeit", 0);
+
+                // Toast.makeText(MainActivity.this, " Wo waren Sie?... Überlebenszeit: " + ueberlebteZeit, Toast.LENGTH_LONG).show();
+                if(ueberlebteZeit != 0){
+
+                    Toast.makeText(MainActivity.this, " Wo waren Sie?... Überlebenszeit: " + ueberlebteZeit, Toast.LENGTH_LONG).show();
+                    editor.putInt("ueberlebteZeit", 0);
+
+                    editor.commit();
+                }
 
             }
 
@@ -75,6 +80,43 @@ public class MainActivity extends AppCompatActivity {
     public void launchActivity(){
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Speichert Tag und Uhrzeit des Starts das Spieles im Sekunden
+     */
+    public void geburtsZeit(){
+
+        // Deitei öffenen in der die Daten liegen
+        SharedPreferences speicherung = getSharedPreferences("SpeicherDatei", 0);
+
+        //Editor Klasse initialiesieren
+        SharedPreferences.Editor editor = speicherung.edit();
+
+        // Aktueller Tag und Zeit
+        Calendar calendar = Calendar.getInstance();
+        String geburtsTag = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(calendar.getTime());
+        geburtsTag = geburtsTag.substring(0, 2);
+        if(geburtsTag.contains(".")){
+            geburtsTag = geburtsTag.substring(0, 1);
+        }
+        //Uhrzeit
+        SimpleDateFormat zeitformat = new SimpleDateFormat("HH:mm:ss");
+        String geburtsUhrzeit = zeitformat.format(calendar.getTime());
+
+        //Schneidet HH aus
+        String zeitformatStunde = geburtsUhrzeit.substring(0, 2);
+        //Schneidet mm aus
+        String zeitformatMinute = geburtsUhrzeit.substring(3, 5);
+        //Schneidet ss aus
+        String zeitformatSekunden = geburtsUhrzeit.substring(6, 8);
+
+        int aktuelleZeitInSekunden = ((Integer.parseInt(geburtsTag) * 24 * 60) + (Integer.parseInt(zeitformatStunde) * 60) + Integer.parseInt(zeitformatMinute)) * 60 + Integer.parseInt(zeitformatSekunden);
+
+        editor.putInt("geburtsZeit", aktuelleZeitInSekunden);
+
+        editor.commit();
+
     }
 
     /**
@@ -203,14 +245,22 @@ public class MainActivity extends AppCompatActivity {
         int vergangeneSekunden = aktuelleZeitInSekunden - letzteLoginZeitInSekunden;
 
         //Lässt alle verpassten Intervalle aufholen
-        int intervallEinheiten = vergangeneSekunden / 5;
-        int intervallEinheitenHintergrund = vergangeneSekunden / 10;
+        int intervallEinheiten = vergangeneSekunden / 3;
+        int intervallEinheitenHintergrund = vergangeneSekunden / 5;
 
         for(int i=0; i<=intervallEinheiten; i++){
 
-            hungerHP += -10;
-            sauberkeitsHP += -10;
-            energieHP += -10;
+            hungerHP += -5;
+            sauberkeitsHP += -5;
+            energieHP += -5;
+
+            if((hungerHP + sauberkeitsHP + energieHP) == 0){
+
+                editor.putInt("ueberlebteZeit", (onlineZeit(letzteLoginZeitInSekunden) + (3 * i)));
+
+                editor.commit();
+                break;
+            }
 
         }
         if(hungerHP < 0){
@@ -246,12 +296,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Berechnet die Zeit in Sekunden des letzten Logins - den ersten Logins
+     */
+    public int onlineZeit(int _letzterLoginInSekunden){
 
+        // Deitei öffenen in der die Daten liegen
+        SharedPreferences speicherung = getSharedPreferences("SpeicherDatei", 0);
 
+        //Editor Klasse initialiesieren
+        SharedPreferences.Editor editor = speicherung.edit();
 
+        int ersterLoginInSekunden = speicherung.getInt("geburtsZeit", 0);
 
+        int OnlineZeitRaum = _letzterLoginInSekunden - ersterLoginInSekunden;
 
-
+        return OnlineZeitRaum;
+    }
 }
 
 

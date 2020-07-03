@@ -84,9 +84,6 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
         destination.setOnDragListener(this);
 
 
-
-
-
         ImageView muedeButton = (ImageView) findViewById(R.id.schlafen);
         timer.run();
 
@@ -139,8 +136,9 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
                 handler.removeCallbacks(timer);
                 sternIstGestorben();
             }
-            if(testCharakter.getEnergie() == 100){
+            if(testCharakter.getEnergie() >= 100){
                 zustand = "Schlafen";
+                updateImage(stern);
             }
 
             SternSchlafAnimation();
@@ -237,6 +235,32 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
         editor.putInt("sauberHp", 0);
         editor.putInt("energieHp", 0);
 
+        // Aktueller Tag und Zeit
+        Calendar calendar = Calendar.getInstance();
+        String todesTag = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(calendar.getTime());
+        todesTag = todesTag.substring(0, 2);
+        if(todesTag.contains(".")){
+            todesTag = todesTag.substring(0, 1);
+        }
+        //Uhrzeit
+        SimpleDateFormat zeitformat = new SimpleDateFormat("HH:mm:ss");
+        String todesUhrzeit = zeitformat.format(calendar.getTime());
+
+        //Schneidet HH aus
+        String zeitformatStunde = todesUhrzeit.substring(0, 2);
+        //Schneidet mm aus
+        String zeitformatMinute = todesUhrzeit.substring(3, 5);
+        //Schneidet ss aus
+        String zeitformatSekunden = todesUhrzeit.substring(6, 8);
+
+        int aktuelleZeitInSekunden = ((Integer.parseInt(todesTag) * 24 * 60) + (Integer.parseInt(zeitformatStunde) * 60) + Integer.parseInt(zeitformatMinute)) * 60 + Integer.parseInt(zeitformatSekunden);
+
+        int ersterLoginInSekunden = speicherung.getInt("geburtsZeit",0);
+
+        int ueberlebteZeit = aktuelleZeitInSekunden - ersterLoginInSekunden;
+
+        editor.putInt("ueberlebteZeit", ueberlebteZeit);
+
         editor.commit();
 
     }
@@ -288,10 +312,7 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
         testCharakter.updateEnergieHp(energieHP);
 
 
-
-
         showesBackgroundView = hintergrund;
-        //Toast.makeText(GameActivity.this, "" +showesBackgroundView, Toast.LENGTH_SHORT).show();
         changeBackground();
         showesBackgroundProzess = showesBackgroundView;
 
@@ -314,15 +335,11 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
                     testCharakter.wirdMuede();
                     counter++;
 
-
-
             }else if (counter==5) {
                 counter = 0;
             }
             else
                 counter++;
-
-
 
     }
     /**
@@ -480,56 +497,6 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-
-        // Stoppt Sounds
-        stopEatingPlayer();
-        stopWashingPlayer();
-        stopSleepingPlayer();
-        stopBackgroundPlayer();
-
-
-        //Aktueller Tag
-        Calendar calendar = Calendar.getInstance();
-        String aktuellerTag = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(calendar.getTime());
-        aktuellerTag = aktuellerTag.substring(0, 2);
-        if(aktuellerTag.contains(".")){
-            aktuellerTag = aktuellerTag.substring(0, 1);
-        }
-        //Uhrzeit
-        SimpleDateFormat zeitformat = new SimpleDateFormat("HH:mm:ss");
-        String zeitformatS = zeitformat.format(calendar.getTime());
-
-
-        int hungerHp = testCharakter.getHunger();
-        int sauberHp = testCharakter.getSauberkeit();
-        int energieHp = testCharakter.getEnergie();
-
-
-        //Share Preferences Datei öffnen
-        SharedPreferences speicherung = getSharedPreferences("SpeicherDatei", 0);
-
-        //Editor Klasse initialiesieren
-        SharedPreferences.Editor editor = speicherung.edit();
-
-        //Schreiben der wichtigen Daten
-        editor.putString("tag", aktuellerTag);
-        editor.putString("uhrzeit",  zeitformatS);
-
-        editor.putInt("hungerHp", hungerHp);
-        editor.putInt("sauberHp", sauberHp);
-        editor.putInt("energieHp", energieHp);
-
-        editor.putInt("hintergrund", showesBackgroundView);
-
-        //Speicherung der Daten
-
-        editor.commit();
-    }
-
-
-    @Override
     public boolean onDrag(View v, DragEvent event) {
         switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED:
@@ -569,6 +536,7 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
                         if(zustand == "Schlafen") {
 
                             zustand = "Aufwäcken";
+                            updateImage(stern);
 
                         }else{
 
@@ -680,7 +648,6 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
                 v.setImageResource(R.drawable.stern_1_schlaeft);
         }
 
-
         else if (!testCharakter.istSehrDreckig() && testCharakter.istSehrMuede()){
             if (zustand=="Schlafen")
                 v.setImageResource(R.drawable.stern_3);
@@ -729,6 +696,54 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Stoppt Sounds
+        stopEatingPlayer();
+        stopWashingPlayer();
+        stopSleepingPlayer();
+        stopBackgroundPlayer();
+
+
+        //Aktueller Tag
+        Calendar calendar = Calendar.getInstance();
+        String aktuellerTag = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(calendar.getTime());
+        aktuellerTag = aktuellerTag.substring(0, 2);
+        if(aktuellerTag.contains(".")){
+            aktuellerTag = aktuellerTag.substring(0, 1);
+        }
+        //Uhrzeit
+        SimpleDateFormat zeitformat = new SimpleDateFormat("HH:mm:ss");
+        String zeitformatS = zeitformat.format(calendar.getTime());
+
+
+        int hungerHp = testCharakter.getHunger();
+        int sauberHp = testCharakter.getSauberkeit();
+        int energieHp = testCharakter.getEnergie();
+
+
+        //Share Preferences Datei öffnen
+        SharedPreferences speicherung = getSharedPreferences("SpeicherDatei", 0);
+
+        //Editor Klasse initialiesieren
+        SharedPreferences.Editor editor = speicherung.edit();
+
+        //Schreiben der wichtigen Daten
+        editor.putString("tag", aktuellerTag);
+        editor.putString("uhrzeit",  zeitformatS);
+
+        editor.putInt("hungerHp", hungerHp);
+        editor.putInt("sauberHp", sauberHp);
+        editor.putInt("energieHp", energieHp);
+
+        editor.putInt("hintergrund", showesBackgroundView);
+
+        //Speicherung der Daten
+
+        editor.commit();
+    }
 
 
 

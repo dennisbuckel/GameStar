@@ -71,24 +71,24 @@ public class Charakter {
     //Charakter bekommt Hunger
     public void wirdHungrig(){
         if(this.hunger > 0) {
-            this.hunger -= 2;
+            this.hunger -= 5;
         }    }
     //Charakter wird dreckig
     public void wirdDreckig(){
         if(this.sauberkeit > 0) {
-            this.sauberkeit -= 2;
+            this.sauberkeit -= 5;
         }
     }
     //Charakter wird Müde
     public void wirdMuede(){
         if(this.energie > 0) {
-            this.energie -= 2;
+            this.energie -= 5;
         }
     }
     //Charakter schläft
     public void schlaeft(){
         if(this.energie < 100) {
-            this.energie += 2;
+            this.energie += 5;
         }
 
     }

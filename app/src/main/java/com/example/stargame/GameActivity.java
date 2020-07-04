@@ -37,6 +37,7 @@ import java.util.Calendar;
 public class GameActivity extends AppCompatActivity implements View.OnDragListener, View.OnTouchListener, View.OnClickListener {
 
     Animation healthAnimation;
+    Animation jumpAnimation;
 
     ImageView fuettern;
     ImageView schlafen;
@@ -83,6 +84,7 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
 
         healthupdated=false;
         healthAnimation= AnimationUtils.loadAnimation(this, R.anim.healthanim);
+        jumpAnimation= AnimationUtils.loadAnimation(this, R.anim.jumpanim);
 
 
         hpbar = (ProgressBar)findViewById(R.id.hpbar);
@@ -94,6 +96,7 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
         stern= findViewById(R.id.stern);
 
         schlafen.setOnClickListener(this);
+        stern.setOnClickListener(this);
 
         fuettern.setOnTouchListener(this);
        // schlafen.setOnTouchListener(this);
@@ -560,6 +563,7 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
                         }else{
 
                             testCharakter.wirdSauber();
+                            plusZehn.setText("+10");
                             healthAnimation();
 
                             playWashingSound();
@@ -592,6 +596,7 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
                         }else{
 
                             testCharakter.isst();
+                            plusZehn.setText("+10");
                             playEatingSound();
                             healthAnimation();
 
@@ -811,6 +816,7 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
         switch (v.getId()) {
             case R.id.schlafen:
                 if (zustand == "Schlafen") {
+                    plusZehn.setText("+5");
                     updateImage(stern);
                     schlafen.setImageResource(R.drawable.moon2);
 
@@ -820,8 +826,24 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
 
                 } else {
                     updateImage(stern);
+
                     schlafen.setImageResource(R.drawable.moon1);
                     zustand = "Schlafen";
+
+
+
+                }
+                break;
+            case R.id.stern:
+                if (zustand == "Schlafen") {
+
+                    stern.startAnimation(jumpAnimation);
+
+
+
+
+                } else {
+
 
 
 

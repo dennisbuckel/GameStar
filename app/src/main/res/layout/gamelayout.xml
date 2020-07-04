@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="220dp"
         android:layout_marginTop="473dp"
-        android:text="+10"
+
         android:textColor="#FFEB3B"
         android:textSize="30dp"
         android:visibility="invisible" />

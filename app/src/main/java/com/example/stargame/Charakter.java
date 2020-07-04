@@ -8,7 +8,6 @@ public class Charakter {
     float posY;
 
 
-    private String name;
     private int hunger;
     private int energie;
     private int sauberkeit;
@@ -72,7 +71,8 @@ public class Charakter {
     public void wirdHungrig(){
         if(this.hunger > 0) {
             this.hunger -= 5;
-        }    }
+        }
+    }
     //Charakter wird dreckig
     public void wirdDreckig(){
         if(this.sauberkeit > 0) {
@@ -155,15 +155,6 @@ public class Charakter {
      */
     public void updateEnergieHp(int _hp) {
         this.energie = _hp;
-    }
-    /**
-     * Gibt den Stern einen Namen
-     * @param _name wird der Name des Sternens
-     */
-    public void namensVergabe(String _name){
-
-        this.name = _name;
-
     }
 
     public void setPosX(float _posX){

@@ -244,9 +244,9 @@ public class MainActivity extends AppCompatActivity {
         int letzteLoginZeitInSekunden = letzteLoginZeitInSekunden();
         int vergangeneSekunden = aktuelleZeitInSekunden - letzteLoginZeitInSekunden;
 
-        //Lässt alle verpassten Intervalle aufholen
-        int intervallEinheiten = vergangeneSekunden / 3;
-        int intervallEinheitenHintergrund = vergangeneSekunden / 5;
+        //Lässt alle verpassten Intervalle aufholen(die Hälfte da ein intervall 1/2 Sekunden ist)
+        int intervallEinheiten = (vergangeneSekunden / (5 / 2));
+        int intervallEinheitenHintergrund = (vergangeneSekunden / (5 / 2));
 
         for(int i=0; i<=intervallEinheiten; i++){
 

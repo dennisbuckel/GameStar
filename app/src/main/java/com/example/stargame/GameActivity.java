@@ -39,9 +39,6 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
     ImageView destination;
     ImageView stern;
 
-
-
-
     ProgressBar hpbar;
 
     Charakter testCharakter = new Charakter();
@@ -103,6 +100,8 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
             ImageView muedeButton = (ImageView) findViewById(R.id.schlafen);
             //muedeButton.setText(zustand);
 
+            //Hintergrundänderung und fortschritt in der Progressbar
+            // alle 5 Sekunden wird das Bild geändert
             if(backgroundIntervall == (5*2)){
                 showesBackgroundProzess += 3;
                 changeBackground();
@@ -158,8 +157,11 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
         TextView z1 = (TextView) findViewById(R.id.schlafZ1);
         TextView z2 = (TextView) findViewById(R.id.schlafZ2);
 
+        //Stern schäft
         if(zustand == "Aufwäcken"){
+            //Schlafsound
             playSleepingSound();
+            //Alle anderne Sounds werden  gestoppt
             stopEatingPlayer();
             stopWashingPlayer();
             z1.setText("Z");
@@ -325,9 +327,11 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
     public void abnutzung(){
 
             if (zustand.equals("Aufwäcken")) {
+
                 testCharakter.schlaeft();
 
             }
+            // Reduzierung der HP
             else if (zustand.equals("Schlafen") && counter<intervall) {
 
                     testCharakter.wirdDreckig();
@@ -667,10 +671,6 @@ public class GameActivity extends AppCompatActivity implements View.OnDragListen
                 v.setImageResource(R.drawable.stern3_1_schlaeft);
 
         }
-
-
-
-
 
 
     }

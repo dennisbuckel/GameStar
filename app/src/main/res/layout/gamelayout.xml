@@ -3,27 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/linear"
 
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
 
+    <TextView
+        android:id="@+id/zehn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="473dp"
+        android:text="+10"
+        android:textColor="#FFEB3B"
+        android:textSize="30dp"
+        android:visibility="invisible" />
+
     <ImageView
         android:id="@+id/fuettern"
         android:layout_width="150px"
         android:layout_height="80px"
-        android:layout_marginStart="100px"
-        android:layout_marginTop="900px"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="62dp"
+        android:layout_marginBottom="139dp"
         android:src="@drawable/komet"
         android:tag="food" />
 
     <ImageView
         android:id="@+id/schlafen"
-        android:layout_width="150px"
-        android:layout_height="80px"
-        android:layout_marginStart="335px"
-        android:layout_marginTop="900px"
-        android:src="@drawable/schlafen"
+        android:layout_width="169dp"
+        android:layout_height="88dp"
+        android:layout_alignParentBottom="true"
+        android:scaleY="1.6"
+        android:scaleX="1.6"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="135dp"
+        android:src="@drawable/moon1"
         android:tag="sleep"
         android:visibility="visible" />
 
@@ -31,9 +52,12 @@
         android:id="@+id/saeubern"
         android:layout_width="150px"
         android:layout_height="80px"
-        android:layout_marginStart="560px"
-        android:layout_marginTop="900px"
-        android:src="@drawable/duschen"
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="145dp"
+        android:src="@drawable/eimer"
         android:tag="shower"
         android:text="Säubern" />
 
@@ -41,7 +65,13 @@
         android:id="@+id/textViewHp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="850px"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="354dp"
+        android:layout_marginBottom="96dp"
+        android:text="HP 300"
         android:textColor="#FFFFFF"
         android:textSize="30sp"></TextView>
 
@@ -49,6 +79,8 @@
         android:id="@+id/viewName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:text=""
         android:textColor="#FFFFFF"
         android:textSize="30sp" />
@@ -88,8 +120,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="105dp"
-        android:layout_marginBottom="254dp"
+        android:layout_marginStart="95dp"
+        android:layout_marginBottom="71dp"
         android:max="300"
         android:min="0"
         android:progressTint="#4CAF50" />

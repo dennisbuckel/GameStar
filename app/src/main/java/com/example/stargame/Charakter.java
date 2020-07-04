@@ -14,19 +14,19 @@ public class Charakter {
     private int hp;
 
     boolean istAusgeschlafen(){
-        if (this.energie > 90)
+        if (this.energie > 70)
             return true;
         else
             return false;
     }
     boolean istSauber(){
-        if (this.sauberkeit > 90)
+        if (this.sauberkeit > 70)
             return true;
         else
             return false;
     }
     boolean istSatt(){
-        if (this.hunger > 90)
+        if (this.hunger > 70)
             return true;
         else
             return false;
@@ -34,29 +34,29 @@ public class Charakter {
 
     boolean hatVielHunger(){
         boolean hatHunger=false;
-        if(this.hunger<=60) return true;
+        if(this.hunger<=40) return true;
         else return false;
     }
     boolean istSehrDreckig(){
-        if(this.sauberkeit<=60) return true;
+        if(this.sauberkeit<=40) return true;
         else return false;
     }
     boolean istSehrMuede(){
-        if(this.energie<=60)return true;
+        if(this.energie<=40)return true;
         else return false;
     }
 
     boolean hatHunger(){
         boolean hatHunger=false;
-        if(this.hunger<=90 && this.hunger>60) return true;
+        if(this.hunger<=70 && this.hunger>40) return true;
         else return false;
     }
     boolean istDreckig(){
-        if(this.sauberkeit<=90 && this.sauberkeit> 60) return true;
+        if(this.sauberkeit<=70 && this.sauberkeit> 40) return true;
         else return false;
     }
     boolean istMuede(){
-        if(this.energie<=90&& this.energie> 60)return true;
+        if(this.energie<=70 && this.energie> 40)return true;
         else return false;
     }
     //Constructor

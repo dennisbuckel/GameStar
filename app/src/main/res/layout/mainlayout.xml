@@ -9,7 +9,6 @@
     >
 
 
-
     <ImageView
         android:id="@+id/komet"
         android:layout_width="wrap_content"
